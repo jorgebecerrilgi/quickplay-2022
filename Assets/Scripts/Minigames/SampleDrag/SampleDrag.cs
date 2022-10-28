@@ -21,7 +21,7 @@ public class SampleDrag : MonoBehaviour
 
     void Update()
     {
-        timerUI.text = ((int)timer.Timer.RemainingSeconds).ToString();
+        timerUI.text = (Mathf.CeilToInt(timer.Timer.RemainingSeconds)).ToString();
     }
 
     private void OnEnable()
