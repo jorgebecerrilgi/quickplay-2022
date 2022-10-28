@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine.InputSystem;
 
 public class GameHandler : MonoBehaviour
@@ -13,19 +12,15 @@ public class GameHandler : MonoBehaviour
         Overcooked,
     }
 
-    [SerializeField]
-    private TextMeshProUGUI UITimer;
-    [SerializeField]
-    private GameObject oven;
-    [SerializeField]
-    private Sprite[] ovenSprites;
-    [SerializeField]
-    private GameObject warning;
+    [SerializeField] private TextMeshProUGUI UITimer;
+    [SerializeField] private GameObject oven;
+    [SerializeField] private Sprite[] ovenSprites;
+    [SerializeField] private GameObject warning;
 
     private PlayerInput playerInput;
     private InputAction actionTap;
-    private SpriteRenderer spriteRenderer;
     private TimerBehaviour timerBehaviour;
+    private SpriteRenderer spriteRenderer;
     private OvenStates ovenState = OvenStates.Undercooked;
     private bool hasTapped = false;
 

@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// A MonoBehaviour Component implementation of a timer.
+/// </summary>
+/// <remarks>
+/// Provides a timer that emits a UnityEvent after it ends.
+/// Also provides alerts (that is, a time within the timer's duration) that also emit a UnityEvent.
+/// </remarks>
 public class TimerBehaviour : MonoBehaviour
 {
     [SerializeField] private float duration = 1f;
@@ -12,7 +19,6 @@ public class TimerBehaviour : MonoBehaviour
 
     public Timer Timer { get; private set; }
 
-    // Start is called before the first frame update
     void Start()
     {
         Timer = new Timer(duration, alarms);
@@ -32,7 +38,6 @@ public class TimerBehaviour : MonoBehaviour
         Destroy(this);
     }
 
-    // Update is called once per frame
     void Update()
     {
         Timer.Tick(Time.deltaTime);
