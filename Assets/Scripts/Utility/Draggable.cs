@@ -15,6 +15,8 @@ public class Draggable : MonoBehaviour
     /// Defines the circular radius of the grabbing area.
     /// </summary>
     [SerializeField] private float grabRadius = 1f;
+    [SerializeField] private bool lockHorizontal = false;
+    [SerializeField] private bool lockVertical = false;
     /// <summary>
     /// The scene's camera, to convert from camera position to world position.
     /// </summary>
@@ -64,6 +66,14 @@ public class Draggable : MonoBehaviour
 
         Vector3 touchPosition = GetWorldPosition(obj.screenPosition);
         // Sets object position to touch position.
+        if (lockHorizontal)
+        {
+            touchPosition.x = transform.position.x;
+        }else if (lockVertical)
+        {
+            touchPosition.y = transform.position.y;
+        }
+
         transform.position = touchPosition;
     }
 

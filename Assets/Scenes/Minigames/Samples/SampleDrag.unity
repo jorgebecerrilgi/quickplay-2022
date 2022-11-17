@@ -1134,4 +1134,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabRadius: 1
+  lockHorizontal: 0
+  lockVertical: 0
   mainCamera: {fileID: 1711272609}
