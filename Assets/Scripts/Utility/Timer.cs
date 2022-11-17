@@ -15,6 +15,7 @@ public class Timer
     private float[] alarms;
     private int alarmsAmount;
     private int currentAlarm = 0;
+    private bool isPaused = true;
     public event Action OnTimerEnd;
     public event Action OnAlert;
 
@@ -28,16 +29,28 @@ public class Timer
     /// An array of alarms, in seconds, that will each emit an event when they're reached.
     /// Alerts must lie within the timer's duration, and be in ascending order.
     /// </param>
-    public Timer(float duration, float[] alarms)
+    public Timer(float duration, float[] alarms, bool autostart)
     {
         RemainingSeconds = duration;
         this.alarms = alarms;
         alarmsAmount = alarms.Length;
+        isPaused = !autostart;
+    }
+
+    public void Start()
+    {
+        isPaused = false;
+    }
+
+    public void Start(float newDuration)
+    {
+        RemainingSeconds = newDuration;
+        Start();
     }
 
     public void Tick(float delta)
     {
-        if (RemainingSeconds <= 0f) return;
+        if (isPaused || RemainingSeconds <= 0f) return;
         RemainingSeconds -= delta;
 
         CheckForTimerEnd();

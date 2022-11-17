@@ -13,15 +13,17 @@ using UnityEngine.Events;
 public class TimerBehaviour : MonoBehaviour
 {
     [SerializeField] private float duration = 1f;
+    [SerializeField] private bool destroyOnEnd = true;
+    [SerializeField] private bool autostart = true;
     [SerializeField] private float[] alarms = new float[0];
     [SerializeField] private UnityEvent onTimerEnd = null;
     [SerializeField] private UnityEvent onAlert = null;
 
     public Timer Timer { get; private set; }
 
-    void Start()
+    private void Start()
     {
-        Timer = new Timer(duration, alarms);
+        Timer = new Timer(duration, alarms, autostart);
 
         Timer.OnTimerEnd += TimerOnTimerEnd;
         Timer.OnAlert += TimerOnAlert;
@@ -35,11 +37,22 @@ public class TimerBehaviour : MonoBehaviour
     private void TimerOnTimerEnd()
     {
         onTimerEnd?.Invoke();
-        Destroy(this);
+
+        if (destroyOnEnd) Destroy(this);
     }
 
     void Update()
     {
         Timer.Tick(Time.deltaTime);
+    }
+
+    public void BeginTimer()
+    {
+        Timer.Start();
+    }
+
+    public void RestartTimer()
+    {
+        Timer.Start(duration);
     }
 }
