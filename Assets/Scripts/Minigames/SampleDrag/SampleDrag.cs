@@ -47,6 +47,7 @@ public class SampleDrag : MonoBehaviour
 
     public void TimerEnd()
     {
+        Debug.Log("ending");
         MinigameEnded = true;
     }
 }
