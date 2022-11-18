@@ -1,15 +1,17 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using System.Collections.Generic;
+using System;
 
-public class SampleDrag : MonoBehaviour
+public class SacarTamales : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerUI;
-    [SerializeField] private GameObject oven;
-    [SerializeField] private Sprite ovenFullSprite;
-    [SerializeField] private GameObject bread;
+
+    [SerializeField] private Camera mainCamera;
 
     private TimerBehaviour timer;
-    private Draggable breadDraggable;
+    [SerializeField] private TamalDraggable tamalDraggable;
 
     public bool MinigameEnded { get; private set; } = false;
     public bool MinigamePassed { get; private set; } = false;
@@ -26,23 +28,22 @@ public class SampleDrag : MonoBehaviour
 
     private void OnEnable()
     {
-        breadDraggable = bread.GetComponent<Draggable>();
-        breadDraggable.OnDragEnd += BreadOnDragEnd;
+        tamalDraggable.OnDragEnd += BreadOnDragEnd;
     }
 
     private void OnDisable()
     {
-        breadDraggable.OnDragEnd -= BreadOnDragEnd;
+        tamalDraggable.OnDragEnd -= BreadOnDragEnd;
     }
 
     private void BreadOnDragEnd(Vector3 worldPosition)
     {
-        if (MinigameEnded || worldPosition.y < 0) return;
+        if (MinigameEnded || worldPosition.y > -2 || worldPosition.y < -4 || worldPosition.x < -1 || worldPosition.x > 1) return;
 
+        tamalDraggable.placed = true;
+        tamalDraggable.transform.position = new Vector3(worldPosition.x, worldPosition.y, worldPosition.z);
+       	MinigamePassed = true;
         MinigameEnded = true;
-        MinigamePassed = true;
-        oven.GetComponent<SpriteRenderer>().sprite = ovenFullSprite;
-        Destroy(bread);
     }
 
     public void TimerEnd()
