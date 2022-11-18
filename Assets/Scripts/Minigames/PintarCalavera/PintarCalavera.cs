@@ -14,6 +14,8 @@ public class PintarCalavera : MonoBehaviour
     public bool MinigameEnded { get; private set; } = false;
     public bool MinigamePassed { get; private set; } = false;
 
+    [SerializeField] private WinLoss winLoss;
+
     public int point = 0;
 
     private void Awake()
@@ -24,6 +26,32 @@ public class PintarCalavera : MonoBehaviour
     private void Update()
     {
         timerUI.text = (Mathf.CeilToInt(timer.Timer.RemainingSeconds)).ToString();
+    }
+
+    public void TryPassed()
+    {
+        if (Passed())
+        {
+            MinigamePassed = true;
+            StartCoroutine(RealEnd());
+        }
+    }
+
+    public void TimerEnd()
+    {
+        StartCoroutine(RealEnd());
+    }
+
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 
     private bool Passed()
@@ -43,11 +71,4 @@ public class PintarCalavera : MonoBehaviour
         return true;
     }
 
-    public void TimerEnd()
-    {
-        MinigameEnded = true;
-
-        MinigamePassed = Passed();
-        Debug.Log(MinigamePassed);
-    }
 }

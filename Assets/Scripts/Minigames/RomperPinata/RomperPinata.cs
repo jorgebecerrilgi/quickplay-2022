@@ -38,6 +38,12 @@ public class RomperPinata : MonoBehaviour
     public bool MinigameEnded { get; private set; } = false;
     public bool MinigamePassed { get; private set; } = false;
 
+    [SerializeField] private AudioSource[] hitSounds;
+
+    private bool pinataDead = false;
+
+    [SerializeField] private WinLoss winLoss;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -55,7 +61,8 @@ public class RomperPinata : MonoBehaviour
     // Update is called once per frame
     private void FixedUpdate()
     {
-        MovePinata();
+        if (!pinataDead)
+            MovePinata();
         MoveStick();
     }
 
@@ -127,6 +134,11 @@ public class RomperPinata : MonoBehaviour
                     {
                         pinata.GetComponent<SpriteRenderer>().sprite = hitSprites[hits];
                     }
+                    if (hits < hitSounds.Length + 1)
+                    {
+                        hitSounds[hits-1].Play();
+                    }
+                    Debug.Log(hits);
     				if (hits == 3)
     				{
     					Win();
@@ -156,6 +168,7 @@ public class RomperPinata : MonoBehaviour
     {
     	stickSwinging = true;
     	stickUp = false;
+        stick.GetComponent<AudioSource>().Play();
     }
 
     private void ActionTapPerformed(InputAction.CallbackContext obj)
@@ -168,15 +181,25 @@ public class RomperPinata : MonoBehaviour
 
     private void Win()
     {
-    	MinigameEnded = true;
+        pinataDead = true;
     	MinigamePassed = true;
+        StartCoroutine(RealEnd());
     }
 
     public void TimerEnd()
     {
-        if (MinigameEnded)
-        	return;
-        MinigameEnded = true;
-        MinigamePassed = false;
+        StartCoroutine(RealEnd());
+    }
+
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 }

@@ -16,6 +16,10 @@ public class SacarTamales : MonoBehaviour
     public bool MinigameEnded { get; private set; } = false;
     public bool MinigamePassed { get; private set; } = false;
 
+    [SerializeField] private Transform plate;
+
+    [SerializeField] private WinLoss winLoss;
+
     void Start()
     {
         timer = GetComponent<TimerBehaviour>();
@@ -41,14 +45,25 @@ public class SacarTamales : MonoBehaviour
         if (MinigameEnded || worldPosition.y > -2 || worldPosition.y < -4 || worldPosition.x < -1 || worldPosition.x > 1) return;
 
         tamalDraggable.placed = true;
-        tamalDraggable.transform.position = new Vector3(worldPosition.x, worldPosition.y, worldPosition.z);
+        tamalDraggable.transform.position = plate.position;
        	MinigamePassed = true;
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
     }
 
     public void TimerEnd()
     {
-        Debug.Log("ending");
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
+    }
+
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 }

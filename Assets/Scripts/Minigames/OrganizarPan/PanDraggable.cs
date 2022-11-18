@@ -29,6 +29,9 @@ public class PanDraggable : MonoBehaviour
     public delegate void DragEnd(Vector3 worldPosition);
     public event DragEnd OnDragEnd;
 
+    [SerializeField] private AudioSource grabSFX;
+    [SerializeField] private AudioSource dropSFX;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,11 +55,13 @@ public class PanDraggable : MonoBehaviour
     private void Enlarge()
     {
         enlarging = true;
+        grabSFX.Play();
     }
 
     private void Reduce()
     {
         enlarging = false;
+        dropSFX.Play();
     }
 
     private void OnEnable()

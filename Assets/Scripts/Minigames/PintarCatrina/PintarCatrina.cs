@@ -16,6 +16,8 @@ public class PintarCatrina : MonoBehaviour
 
     public int point = 0;
 
+    [SerializeField] private WinLoss winLoss;
+
     private void Awake()
     {
         timer = GetComponent<TimerBehaviour>();
@@ -24,6 +26,15 @@ public class PintarCatrina : MonoBehaviour
     private void Update()
     {
         timerUI.text = (Mathf.CeilToInt(timer.Timer.RemainingSeconds)).ToString();
+    }
+
+    public void TryPassed()
+    {
+        if (Passed())
+        {
+            MinigamePassed = true;
+            StartCoroutine(RealEnd());
+        }
     }
 
     private bool Passed()
@@ -45,9 +56,18 @@ public class PintarCatrina : MonoBehaviour
 
     public void TimerEnd()
     {
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
+    }
 
-        MinigamePassed = Passed();
-        Debug.Log(MinigamePassed);
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 }

@@ -21,6 +21,9 @@ public class DecoracionAltar : MonoBehaviour
 
     private bool enlarging = false;
 
+    [SerializeField] private AudioSource grabSFX;
+    [SerializeField] private AudioSource dropSFX;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,11 +53,13 @@ public class DecoracionAltar : MonoBehaviour
     private void Enlarge()
     {
         enlarging = true;
+        grabSFX.Play();
     }
 
     private void Reduce()
     {
         enlarging = false;
+        dropSFX.Play();
     }
 
     private void FixedUpdate()

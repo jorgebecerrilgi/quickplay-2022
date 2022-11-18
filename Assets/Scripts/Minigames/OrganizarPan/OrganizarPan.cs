@@ -19,6 +19,8 @@ public class OrganizarPan : MonoBehaviour
 
     private int breadId;
 
+    [SerializeField] private WinLoss winLoss;
+
     [SerializeField] private float[] breadSizes;
 
     void Start()
@@ -54,7 +56,7 @@ public class OrganizarPan : MonoBehaviour
         if (worldPosition.y > 3)
         {
         	MinigamePassed = breadId == 1;
-            breadDraggable.transform.position = new Vector3(0, 0, 1);
+            breadDraggable.transform.position = new Vector3(0, 4, 1);
         }
         else if (worldPosition.y > 1)
         {
@@ -63,17 +65,28 @@ public class OrganizarPan : MonoBehaviour
         }
         else
         {
-            breadDraggable.transform.position = new Vector3(0, 4, 1);
+            breadDraggable.transform.position = new Vector3(0, 0, 1);
         	MinigamePassed = breadId == 3;
         }
 
         Debug.Log(MinigamePassed);
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
     }
 
     public void TimerEnd()
     {
-        Debug.Log("ending");
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
+    }
+
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 }

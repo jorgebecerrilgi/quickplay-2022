@@ -5,6 +5,8 @@ using UnityEngine;
 public class Eraser : MonoBehaviour
 {
 
+    [SerializeField] private PintarCatrina gameHandler;
+
     void FixedUpdate()
     {
         CapsuleCollider2D myCollider = GetComponent<CapsuleCollider2D>();
@@ -16,7 +18,7 @@ public class Eraser : MonoBehaviour
 			if (point != null && !point.detected)
             {
             	point.detected = true;
-            	Debug.Log(otherCollider.name);
+                gameHandler.TryPassed();
             }
         }
     }

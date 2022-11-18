@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -15,17 +17,36 @@ public class GirarPirinola : MonoBehaviour
     public bool MinigameEnded { get; private set; } = false;
     public bool MinigamePassed { get; private set; } = false;
 
+    [SerializeField] private float speed = .125F;
+
     [SerializeField] private Sprite[] spinSprites;
 
-    private void Spin()
+    [SerializeField] private WinLoss winLoss;
+
+    private IEnumerator spinning;
+
+    private IEnumerator Spin()
     {
-        pirinolaDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = spinSprites[spins];
+        GetComponent<AudioSource>().Play();
+        pirinolaDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = spinSprites[0];
+        yield return new WaitForSeconds(speed);
+        pirinolaDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = spinSprites[1];
+        yield return new WaitForSeconds(speed);
+        pirinolaDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = spinSprites[2];
+        yield return new WaitForSeconds(speed);
+        pirinolaDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = spinSprites[0];
+        yield return new WaitForSeconds(speed);
+        pirinolaDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = spinSprites[1];
+        yield return new WaitForSeconds(speed);
+        pirinolaDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = spinSprites[2];
+        yield return new WaitForSeconds(speed);
+        pirinolaDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = spinSprites[3];
+        GetComponent<AudioSource>().Stop();
     }
 
     void Start()
     {
         timer = GetComponent<TimerBehaviour>();
-        Spin();
     }
 
     void Update()
@@ -49,20 +70,31 @@ public class GirarPirinola : MonoBehaviour
 
         spins += 1;
         Debug.Log("spinned");
-        Spin();
+        StartCoroutine(Spin());
         // TODO: animate
 
         if (spins == requiredSpins)
         {
-        	MinigameEnded = true;
         	MinigamePassed = true;
         	Debug.Log("winn");
+            StartCoroutine(RealEnd());
         }
     }
 
     public void TimerEnd()
     {
-        Debug.Log("ending");
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
+    }
+
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 }

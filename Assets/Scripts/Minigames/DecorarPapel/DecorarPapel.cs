@@ -18,6 +18,8 @@ public class DecorarPapel : MonoBehaviour
     [SerializeField] private Sprite fullShow;
     [SerializeField] private Sprite partialShow;
 
+    [SerializeField] private WinLoss winLoss;
+
     void Start()
     {
         timer = GetComponent<TimerBehaviour>();
@@ -56,6 +58,7 @@ public class DecorarPapel : MonoBehaviour
 
     private void ShowFull()
     {
+        GetComponent<AudioSource>().Play();
     	papelDraggable.gameObject.GetComponent<SpriteRenderer>().sprite = fullShow;
     }
 
@@ -65,14 +68,25 @@ public class DecorarPapel : MonoBehaviour
         if (CheckDetection())
         {
         	ShowFull();
+            MinigamePassed = true;
+            StartCoroutine(RealEnd());
         }
     }
 
     public void TimerEnd()
     {
-        Debug.Log("ending");
-        Debug.Log(MinigamePassed);
-        MinigamePassed = CheckDetection();
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
+    }
+
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 }

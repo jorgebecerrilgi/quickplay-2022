@@ -25,6 +25,8 @@ public class DecorarAltar : MonoBehaviour
 
     [SerializeField] private Transform points;
 
+    [SerializeField] private WinLoss winLoss;
+
     private void Awake()
     {
     	PlaceDecoraciones();
@@ -105,13 +107,25 @@ public class DecorarAltar : MonoBehaviour
         if (decoracionesCount < 3)
         	return;
 
-        MinigameEnded = true;
         MinigamePassed = true;
+
+        StartCoroutine(RealEnd());
     }
 
     public void TimerEnd()
     {
-        Debug.Log("ending");
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
+    }
+
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 }

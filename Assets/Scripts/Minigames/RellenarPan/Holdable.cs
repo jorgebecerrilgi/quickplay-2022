@@ -44,6 +44,7 @@ public class Holdable : MonoBehaviour
     	if (isHolding || gameHandler.MinigameEnded) return;
 
     	isHolding = true;
+        GetComponent<AudioSource>().Play();
         Debug.Log("down");
     }
 
@@ -56,6 +57,7 @@ public class Holdable : MonoBehaviour
     {
         if (!isHolding) return;
 
+        GetComponent<AudioSource>().Stop();
         isHolding = false;
         
         Debug.Log("up");

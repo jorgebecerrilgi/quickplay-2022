@@ -27,6 +27,9 @@ public class TamalDraggable : MonoBehaviour
 
     public bool placed = false;
 
+    [SerializeField] private AudioSource grabSFX;
+    [SerializeField] private AudioSource dropSFX;
+    
     private bool enlarging = false;
 
     // Start is called before the first frame update
@@ -52,11 +55,13 @@ public class TamalDraggable : MonoBehaviour
     private void Enlarge()
     {
         enlarging = true;
+        grabSFX.Play();
     }
 
     private void Reduce()
     {
         enlarging = false;
+        dropSFX.Play();
     }
 
     private void OnEnable()

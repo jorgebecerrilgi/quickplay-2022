@@ -21,6 +21,10 @@ public class RellenarPan : MonoBehaviour
     [SerializeField] private float barr2 = 3.5F;
     [SerializeField] private float barr3 = 6.0F;
 
+    [SerializeField] private WinLoss winLoss;
+    
+    private int MinigameTimeLeft = 0;
+
     private int state = 1;
 
     [SerializeField] private Sprite[] panSprites;
@@ -49,15 +53,25 @@ public class RellenarPan : MonoBehaviour
     {
         if (MinigameEnded) return;
 
-        MinigameEnded = true;
         MinigamePassed = true;
+        StartCoroutine(RealEnd());
     }
 
     public void TimerEnd()
     {
-        Debug.Log("ending");
-        Debug.Log(MinigamePassed);
-        MinigameEnded = true;
+        StartCoroutine(RealEnd());
+    }
+
+    private IEnumerator RealEnd()
+    {
+        if (!MinigameEnded)
+        {
+            MinigameEnded = true;
+            winLoss.Play(MinigamePassed);
+            yield return new WaitForSeconds(1);
+
+            Debug.Log("ending");
+        }
     }
 
     public void UpdateSprite()
@@ -77,6 +91,8 @@ public class RellenarPan : MonoBehaviour
         else if (growth >= barr2 && state == 2)
         {
             MinigamePassed = true;
+            MinigameTimeLeft = Mathf.CeilToInt(timer.Timer.RemainingSeconds);
+            Debug.Log(MinigameTimeLeft);
             UpdateSprite();
         }
     	if (growth >= barr3 && state == 3)
