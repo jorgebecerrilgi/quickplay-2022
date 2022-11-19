@@ -12,7 +12,7 @@ public class MenuHandler : MonoBehaviour
 
 	public void EndlessBtn()
 	{
-		SceneManager.LoadScene("Endless", LoadSceneMode.Additive);
+		SceneManager.LoadScene("Endless");
 	}
 
 	public void SettingsBtn()

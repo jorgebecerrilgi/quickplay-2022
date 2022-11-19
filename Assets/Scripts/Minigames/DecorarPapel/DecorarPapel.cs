@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class DecorarPapel : MonoBehaviour
+public class DecorarPapel : MinigameMB
 {
     [SerializeField] private TextMeshProUGUI timerUI;
 
@@ -83,10 +83,17 @@ public class DecorarPapel : MonoBehaviour
         if (!MinigameEnded)
         {
             MinigameEnded = true;
+            timer.Stop();
             winLoss.Play(MinigamePassed);
             yield return new WaitForSeconds(1);
 
+            InvokeOnEnd(MinigamePassed, timer.Timer.RemainingSeconds);
             Debug.Log("ending");
         }
+    }
+
+    public override void BeginMinigame(float remainingSeconds)
+    {
+        timer.BeginTimer(remainingSeconds);
     }
 }

@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RomperPinata : MonoBehaviour
+public class RomperPinata : MinigameMB
 {
 
     [SerializeField] private TextMeshProUGUI timerUI;
@@ -196,10 +196,17 @@ public class RomperPinata : MonoBehaviour
         if (!MinigameEnded)
         {
             MinigameEnded = true;
+            timer.Stop();
             winLoss.Play(MinigamePassed);
             yield return new WaitForSeconds(1);
 
+            InvokeOnEnd(MinigamePassed, timer.Timer.RemainingSeconds);
             Debug.Log("ending");
         }
+    }
+
+    public override void BeginMinigame(float remainingSeconds)
+    {
+        timer.BeginTimer(remainingSeconds);
     }
 }

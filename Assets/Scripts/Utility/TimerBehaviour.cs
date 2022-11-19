@@ -19,11 +19,13 @@ public class TimerBehaviour : MonoBehaviour
     [SerializeField] private UnityEvent onTimerEnd = null;
     [SerializeField] private UnityEvent onAlert = null;
 
+    private bool isRunning = false;
     public Timer Timer { get; private set; }
 
     private void Start()
     {
         Timer = new Timer(duration, alarms, autostart);
+        isRunning = autostart;
 
         Timer.OnTimerEnd += TimerOnTimerEnd;
         Timer.OnAlert += TimerOnAlert;
@@ -43,16 +45,30 @@ public class TimerBehaviour : MonoBehaviour
 
     void Update()
     {
+        if (!isRunning) return;
         Timer.Tick(Time.deltaTime);
     }
 
     public void BeginTimer()
     {
         Timer.Start();
+        isRunning = true;
+    }
+
+    public void BeginTimer(float newDuration)
+    {
+        Timer.Start(newDuration);
+        isRunning = true;
     }
 
     public void RestartTimer()
     {
         Timer.Start(duration);
+        isRunning = true;
+    }
+
+    public void Stop()
+    {
+        isRunning = false;
     }
 }

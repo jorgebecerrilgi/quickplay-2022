@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PintarCalavera : MonoBehaviour
+public class PintarCalavera : MinigameMB
 {
     [SerializeField] private TextMeshProUGUI timerUI;
 
@@ -47,9 +47,11 @@ public class PintarCalavera : MonoBehaviour
         if (!MinigameEnded)
         {
             MinigameEnded = true;
+            timer.Stop();
             winLoss.Play(MinigamePassed);
             yield return new WaitForSeconds(1);
 
+            InvokeOnEnd(MinigamePassed, timer.Timer.RemainingSeconds);
             Debug.Log("ending");
         }
     }
@@ -71,4 +73,8 @@ public class PintarCalavera : MonoBehaviour
         return true;
     }
 
+    public override void BeginMinigame(float remainingSeconds)
+    {
+        timer.BeginTimer(remainingSeconds);
+    }
 }

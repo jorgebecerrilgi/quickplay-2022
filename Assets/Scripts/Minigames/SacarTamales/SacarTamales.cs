@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class SacarTamales : MonoBehaviour
+public class SacarTamales : MinigameMB
 {
     [SerializeField] private TextMeshProUGUI timerUI;
 
@@ -60,10 +60,17 @@ public class SacarTamales : MonoBehaviour
         if (!MinigameEnded)
         {
             MinigameEnded = true;
+            timer.Stop();
             winLoss.Play(MinigamePassed);
             yield return new WaitForSeconds(1);
 
+            InvokeOnEnd(MinigamePassed, timer.Timer.RemainingSeconds);
             Debug.Log("ending");
         }
+    }
+
+    public override void BeginMinigame(float remainingSeconds)
+    {
+        timer.BeginTimer(remainingSeconds);
     }
 }

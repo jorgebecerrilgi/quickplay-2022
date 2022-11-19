@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GirarPirinola : MonoBehaviour
+public class GirarPirinola : MinigameMB
 {
     [SerializeField] private TextMeshProUGUI timerUI;
 
@@ -91,10 +91,17 @@ public class GirarPirinola : MonoBehaviour
         if (!MinigameEnded)
         {
             MinigameEnded = true;
+            timer.Stop();
             winLoss.Play(MinigamePassed);
             yield return new WaitForSeconds(1);
 
+            InvokeOnEnd(MinigamePassed, timer.Timer.RemainingSeconds);
             Debug.Log("ending");
         }
+    }
+
+    public override void BeginMinigame(float remainingSeconds)
+    {
+        timer.BeginTimer(remainingSeconds);
     }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class OrganizarPan : MonoBehaviour
+public class OrganizarPan : MinigameMB
 {
     [SerializeField] private TextMeshProUGUI timerUI;
     [SerializeField] private GameObject bread;
@@ -83,10 +83,17 @@ public class OrganizarPan : MonoBehaviour
         if (!MinigameEnded)
         {
             MinigameEnded = true;
+            timer.Stop();
             winLoss.Play(MinigamePassed);
             yield return new WaitForSeconds(1);
 
+            InvokeOnEnd(MinigamePassed, timer.Timer.RemainingSeconds);
             Debug.Log("ending");
         }
+    }
+
+    public override void BeginMinigame(float remainingSeconds)
+    {
+        timer.BeginTimer(remainingSeconds);
     }
 }

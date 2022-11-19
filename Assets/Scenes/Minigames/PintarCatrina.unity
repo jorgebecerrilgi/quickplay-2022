@@ -1087,7 +1087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duration: 10
   destroyOnEnd: 1
-  autostart: 1
+  autostart: 0
   alarms: []
   onTimerEnd:
     m_PersistentCalls:
@@ -4074,7 +4074,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 07b94861c585ad14787ec25892fa253a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 72978efeae0661140a21fab9192c7ebf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
